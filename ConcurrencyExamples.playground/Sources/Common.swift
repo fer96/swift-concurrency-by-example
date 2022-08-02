@@ -1,7 +1,9 @@
 import Foundation
 
-public func example(_ name: String, execute: () -> ()) {
+public func example(_ name: String, execute action: () -> ()) {
   print(String.border(), name, separator: String.breakSpace)
-  execute()
+
+  action()
+
   print(String.border(), String.breakSpace)
 }
