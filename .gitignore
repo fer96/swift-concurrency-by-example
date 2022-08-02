@@ -4,6 +4,11 @@
 
 .DS_store
 
+## Playgrounds
+
+*.playground/contents.xcplayground
+*.playground/playground.xcworkspace/
+
 ## Resources
 
 swift-concurrency-by-example.pdf
