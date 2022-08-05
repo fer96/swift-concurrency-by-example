@@ -1,7 +1,8 @@
 import Foundation
 import _Concurrency
 
-Task {
+// MARK: - Execute ASYNC/AWAIT functions
+asyncExample("Call async functions") {
   func fetchWeatherHistory() async -> [Double] {
     return (1...100_000).map { _ in Double.random(in: -10...30) }
   }
@@ -26,7 +27,20 @@ Task {
     print("Server response: \(response)")
   }
 
-  print(String.border(), "Process weather", separator: String.breakSpace)
   await processWeather()
-  print(String.border(), String.breakSpace)
+}
+
+// MARK: - Execute throwing async functions
+asyncExample("Async throws | try await") {
+  func fetchFavorites() async throws -> [Int] {
+    let url = URL(string: "https://hws.dev/user-favorites.json")!
+    let (data, _) = try await URLSession.shared.data(from: url)
+    return try JSONDecoder().decode([Int].self, from: data)
+  }
+
+  if let favorites = try? await fetchFavorites() {
+    print("Fetched \(favorites.count) favorites.")
+  } else {
+    print("Failed to fetch favorites.")
+  }
 }
