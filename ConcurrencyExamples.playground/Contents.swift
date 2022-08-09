@@ -44,3 +44,33 @@ asyncExample("Async throws | try await") {
     print("Failed to fetch favorites.")
   }
 }
+
+// MARK: - Execute async let
+asyncExample("Handle async let properties") {
+  struct User: Decodable {
+    let age: Int
+    let name: String
+  }
+
+  struct Message: Decodable {
+    let from: String
+    let message: String
+  }
+
+  func loadData() async {
+    async let (userData, _) = URLSession.shared.data(from:URL(string: "https://hws.dev/user-24601.json")!)
+    async let (messageData, _) = URLSession.shared.data(from:URL(string: "https://hws.dev/user-messages.json")!)
+
+    do {
+      let decoder = JSONDecoder()
+      let user = try await decoder.decode(User.self, from: userData)
+      let messages = try await decoder.decode([Message].self, from: messageData)
+
+      print("User \(user.name) has \(messages.count) message(s).")
+    } catch {
+      print("Sorry, there was a network problem.")
+    }
+  }
+
+  await loadData()
+}
